@@ -38,11 +38,11 @@ class Authenticate
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($this->auth->guard('wink')->check()) {
-            $this->auth->shouldUse('wink');
+        if ($this->auth->guard(config("wink.guard"))->check()) {
+            $this->auth->shouldUse(config("wink.guard"));
         } else {
             throw new AuthenticationException(
-                'Unauthenticated.', ['wink'], route('wink.auth.login')
+                'Unauthenticated.', [config("wink.guard")], route('login')
             );
         }
 

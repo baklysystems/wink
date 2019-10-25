@@ -53,6 +53,6 @@ class LoginController
      */
     protected function guard()
     {
-        return Auth::guard('wink');
+        return Auth::guard(config("wink.guard"));
     }
 }

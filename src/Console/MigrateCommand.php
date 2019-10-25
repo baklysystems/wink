@@ -41,19 +41,19 @@ class MigrateCommand extends Command
         ]);
 
         if ($shouldCreateNewAuthor) {
+
             WinkAuthor::create([
                 'id' => (string) Str::uuid(),
-                'name' => 'Regina Phalange',
-                'slug' => 'regina-phalange',
+                'name' => $name = auth()->user()->name,
+                'slug' => Str::slug($name, "_"),
                 'bio' => 'This is me.',
-                'email' => 'admin@mail.com',
-                'password' => Hash::make($password = Str::random()),
+                config("foreign_auth_table_column") => auth()->id()
             ]);
 
             $this->line('');
             $this->line('');
             $this->line('Wink is ready for use. Enjoy!');
-            $this->line('You may log in using <info>admin@mail.com</info> and password: <info>'.$password.'</info>');
+            $this->line('You may log in');
         }
     }
 }

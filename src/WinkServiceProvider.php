@@ -16,7 +16,6 @@ class WinkServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerRoutes();
-        $this->registerAuthGuard();
         $this->registerPublishing();
 
         $this->loadViewsFrom(
@@ -39,39 +38,8 @@ class WinkServiceProvider extends ServiceProvider
             ->as('wink.')
             ->prefix($path)
             ->group(function () {
-                Route::get('/login', 'LoginController@showLoginForm')->name('auth.login');
-                Route::post('/login', 'LoginController@login')->name('auth.attempt');
-
-                Route::get('/password/forgot', 'ForgotPasswordController@showResetRequestForm')->name('password.forgot');
-                Route::post('/password/forgot', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-                Route::get('/password/reset/{token}', 'ForgotPasswordController@showNewPassword')->name('password.reset');
-            });
-
-        Route::namespace('Wink\Http\Controllers')
-            ->middleware([$middlewareGroup, Authenticate::class])
-            ->as('wink.')
-            ->prefix($path)
-            ->group(function () {
                 $this->loadRoutesFrom(__DIR__.'/Http/routes.php');
             });
-    }
-
-    /**
-     * Register the package's authentication guard.
-     *
-     * @return void
-     */
-    private function registerAuthGuard()
-    {
-        $this->app['config']->set('auth.providers.wink_authors', [
-            'driver' => 'eloquent',
-            'model' => WinkAuthor::class,
-        ]);
-
-        $this->app['config']->set('auth.guards.wink', [
-            'driver' => 'session',
-            'provider' => 'wink_authors',
-        ]);
     }
 
     /**

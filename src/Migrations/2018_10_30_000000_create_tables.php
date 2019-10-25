@@ -13,6 +13,23 @@ class CreateTables extends Migration
      */
     public function up()
     {
+        $authTable = config("wink.foreign_auth_table");
+        if(Schema::hasTable($authTable)){
+            Schema::table($authTable, function (Blueprint $table) use ($authTable){
+
+               if(!Schema::hasColumn($authTable, "bio")){
+                   $table->text("bio")->nullable();
+               }
+
+                if(!Schema::hasColumn($authTable, "slug")){
+                    $table->string("slug")->unique();
+                }
+
+                if(!Schema::hasColumn($authTable, "avatar")){
+                    $table->string("avatar")->nullable();
+                }
+            });
+        }
         Schema::create('wink_tags', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('slug')->unique();
@@ -45,13 +62,15 @@ class CreateTables extends Migration
 
         Schema::create('wink_authors', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->unsignedBigInteger(config("wink.foreign_table_column"));
             $table->string('slug')->unique();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
             $table->text('bio');
             $table->string('avatar')->nullable();
-            $table->rememberToken();
+
+            $table->foreign(config("wink.foreign_auth_table_column"))
+                ->references(config("wink.foreign_auth_table_column_id"))
+                ->on(config("wink.foreign_auth_table"));
             $table->timestamps();
         });
 

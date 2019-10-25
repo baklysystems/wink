@@ -54,5 +54,34 @@ return [
     | - ShareErrorsFromSession
     |
     */
-    'middleware_group' => env('WINK_MIDDLEWARE_GROUP', 'web'),
+    'middleware_group' => [
+        "web",
+        "auth"
+    ],
+
+    /*
+    |
+    |Guard to authenticate the routes by
+    |
+    */
+
+    'guard'=>env('WINK_GUARD', 'web'),
+    /*
+    |
+    |The column name for the column of foreign key belonging to the foreign table
+    |
+    */
+    'foreign_auth_table_column' => env("WINK_AUTH_TABLE_COLUMN", "user_id"),
+    /*
+    |
+    |The primary identifier for the foreign table
+    |
+    */
+    'foreign_auth_table_column_id' => env("WINK_AUTH_TABLE_COLUMN_ID", "id"),
+    /*
+    |
+    |The foreign table name
+    |
+    */
+    'foreign_auth_table'=> env("WINK_AUTH_TABLE", "users")
 ];
