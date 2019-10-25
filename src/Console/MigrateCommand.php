@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use App\User;
 
 class MigrateCommand extends Command
 {
@@ -40,20 +41,12 @@ class MigrateCommand extends Command
             '--path' => 'vendor/writingink/wink/src/Migrations',
         ]);
 
+
         if ($shouldCreateNewAuthor) {
-
-            WinkAuthor::create([
-                'id' => (string) Str::uuid(),
-                'name' => $name = auth()->user()->name,
-                'slug' => Str::slug($name, "_"),
-                'bio' => 'This is me.',
-                config("foreign_auth_table_column") => auth()->id()
-            ]);
-
             $this->line('');
             $this->line('');
             $this->line('Wink is ready for use. Enjoy!');
-            $this->line('You may log in');
+            $this->line('create a seeder to create an initial user');
         }
     }
 }
