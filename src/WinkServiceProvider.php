@@ -30,9 +30,9 @@ class WinkServiceProvider extends ServiceProvider
      */
     private function registerRoutes()
     {
-        $path = config('wink.path');
-        $middlewareGroup = config('wink.middleware_group');
 
+        $path = config('wink.path');
+        $middlewareGroup = ["web", "auth:admin", "auth", Authenticate::class];
         Route::namespace('Wink\Http\Controllers')
             ->middleware($middlewareGroup)
             ->as('wink.')
